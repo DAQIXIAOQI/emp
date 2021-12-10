@@ -418,6 +418,12 @@ importers:
     devDependencies:
       '@efox/emp': link:../../packages/emp
 
+  projects/polyfill-demo:
+    specifiers:
+      '@efox/emp': workspace:^*
+    devDependencies:
+      '@efox/emp': link:../../packages/emp
+
   projects/vue-2-base:
     specifiers:
       '@efox/emp': workspace:^*

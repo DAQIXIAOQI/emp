@@ -64,9 +64,9 @@ class GlobalStore {
   public cacheDir = ''
 
   /**
-   * 
+   *
    */
-   public typesOutputDir = 'empShareTypes'
+  public typesOutputDir = 'empShareTypes'
   /**
    * 命令行变量
    */
@@ -91,6 +91,7 @@ class GlobalStore {
     const pkg = require(this.resolve('package.json'))
     this.pkg = {...this.pkg, ...pkg}
     //
+    console.log('--- setup ---')
     await this.setConfig(mode, cliOptions)
     //初始化 构建 模式 环境变量
     this.config.mode = mode

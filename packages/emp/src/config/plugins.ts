@@ -10,6 +10,7 @@ export type ConfigPluginType = (o: ConfigPluginOptions) => void | Promise<void>
 class ConfigPlugins {
   constructor() {}
   async setup() {
+    console.log('plugin setup', store.config.plugins)
     if (store.config.plugins.length > 0) {
       // 并行执行所有插件方法
       await Promise.all(
