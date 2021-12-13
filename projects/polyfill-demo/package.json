@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@efox/emp": "workspace:^*"
+    "@efox/emp": "workspace:^*",
+    "@efox/plugin-polyfill": "workspace:^*"
   }
 }
