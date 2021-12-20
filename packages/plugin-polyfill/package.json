@@ -16,6 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "rimraf": "^3.0.2",
-    "ts-transform-paths": "^2.0.3"
+    "ts-transform-paths": "^2.0.3",
+    "ttypescript": "^1.5.12",
+    "html-webpack-plugin": "^5.5.0"
   }
 }

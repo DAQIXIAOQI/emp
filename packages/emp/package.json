@@ -106,6 +106,7 @@
     "@types/webpack-bundle-analyzer": "^4.4.1",
     "@types/webpack-dev-server": "^4.3.1",
     "rimraf": "^3.0.2",
+    "strip-ansi": "^7.0.1",
     "ts-transform-paths": "^2.0.3",
     "ttypescript": "^1.5.12"
   }
