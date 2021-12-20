@@ -1,6 +1,7 @@
 const {defineConfig} = require('@efox/emp')
 const {cdn, esm} = require('./cdn')
-module.exports = defineConfig(({mode}) => {
+module.exports = defineConfig(({mode, env}) => {
+  console.log('mode env', mode, env)
   // const target = 'es2018'
   const target = 'es5'
   const isESM = !['es3', 'es5'].includes(target)
@@ -14,7 +15,7 @@ module.exports = defineConfig(({mode}) => {
     empShare: {
       name: 'microApp',
       remotes: {
-        '@microHost': `microHost@http://localhost:8001/emp.js`,
+        '@microHost': `microHost@http://127.0.0.1:8001/emp.js`,
       },
       exposes: {
         './App': './src/App',
