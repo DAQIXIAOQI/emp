@@ -9,15 +9,16 @@
     "build": "rimraf dist && ttsc"
   },
   "dependencies": {
-    "webpack": "^5.65.0",
-    "@efox/emp": "workspace:^*"
+    "@efox/emp": "workspace:^*",
+    "webpack": "^5.65.0"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/ejs": "^3.1.0",
+    "html-webpack-plugin": "^5.5.0",
     "rimraf": "^3.0.2",
     "ts-transform-paths": "^2.0.3",
-    "ttypescript": "^1.5.12",
-    "html-webpack-plugin": "^5.5.0"
+    "ttypescript": "^1.5.12"
   }
 }

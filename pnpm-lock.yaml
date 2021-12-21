@@ -235,6 +235,7 @@ importers:
   packages/plugin-polyfill:
     specifiers:
       '@efox/emp': workspace:^*
+      '@types/ejs': ^3.1.0
       html-webpack-plugin: ^5.5.0
       rimraf: ^3.0.2
       ts-transform-paths: ^2.0.3
@@ -244,6 +245,7 @@ importers:
       '@efox/emp': link:../emp
       webpack: 5.65.0
     devDependencies:
+      '@types/ejs': 3.1.0
       html-webpack-plugin: 5.5.0_webpack@5.65.0
       rimraf: 3.0.2
       ts-transform-paths: 2.0.3
@@ -3145,6 +3147,10 @@ packages:
       - esbuild
       - uglify-js
       - webpack-cli
+    dev: true
+
+  /@types/ejs/3.1.0:
+    resolution: {integrity: sha512-DCg+Ka+uDQ31lJ/UtEXVlaeV3d6t81gifaVWKJy4MYVVgvJttyX/viREy+If7fz+tK/gVxTGMtyrFPnm4gjrVA==}
     dev: true
 
   /@types/eslint-scope/3.7.1:
@@ -7066,7 +7072,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.65.0_@swc+core@1.2.118
+      webpack: 5.65.0
 
   /htmlparser2/6.1.0:
     resolution: {integrity: sha512-gyyPk6rgonLFEDGoeRgQNaEUvdJ4ktTmmUh/h2t7s+M8oPpIPxgNACWa+6ESR57kXstwqPiCut0V8NRpcwgU7A==}

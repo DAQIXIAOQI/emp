@@ -2,6 +2,8 @@ import {Compiler} from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 const path = require('path')
 
+const PluginName = 'polyfill-plugin'
+const entryName = 'polyfill'
 class TestPlugin {
   options: any
 
@@ -9,92 +11,50 @@ class TestPlugin {
     this.options = Object.assign({}, opts)
   }
   apply(compiler: Compiler) {
-    const onBeforeHtmlGeneration = (htmlPluginData: any, callback: any) => {
-      const {assets} = htmlPluginData
-      console.log('onBeforeHtmlGeneration')
-      // const js = path.resolve(__dirname, './test.js')
-      // assets.js = [js].concat(assets.js)
-
-      if (callback) {
-        callback(null, htmlPluginData)
-      } else {
-        return Promise.resolve(htmlPluginData)
-      }
-    }
-
-    const onA = (htmlPluginData: any, callback: any) => {
-      console.log('onA1')
-      htmlPluginData.assetTags.scripts.unshift({
-        tagName: 'script',
-        voidTag: false,
-        meta: {plugin: 'html-webpack-plugin'},
-        attributes: {defer: false, type: undefined, src: path.resolve(__dirname, './test.js')},
-      })
-      if (callback) {
-        callback(null, htmlPluginData)
-      } else {
-        return Promise.resolve(htmlPluginData)
-      }
-    }
-    compiler.hooks.compilation.tap('emit', (compilation: any, options: any) => {
-      console.log('compilation')
-      const hooks = HtmlWebpackPlugin.getHooks(compilation)
-      const htmlPlugins = compilation.options.plugins.filter((plugin: any) => {
-        // console.log('HtmlWebpackPlugin plugin', plugin instanceof Object, HtmlWebpackPlugin)
-        return plugin instanceof HtmlWebpackPlugin
-      })
-      // if (htmlPlugins.length === 0) {
-      //   const message =
-      //     "Error running html-webpack-tags-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?"
-      //   throw new Error(message)
-      // }
-      hooks.beforeAssetTagGeneration.tapAsync('htmlWebpackTagsPlugin', onA)
-      hooks.alterAssetTags.tapAsync('htmlWebpackTagsPlugin', onA)
-    })
-    // compiler.hooks.entryOption.tap('polyfill-plugin', () => {
-    //   console.log('entryOption', compiler.options.entry)
-    //   // compiler.options.entry.index.import.unshift(path.resolve(__dirname, './test.js'))
-    //   // params.options.entry.index.import.unshift(path.resolve(__dirname, './test.js'))
-    //   // callback && callback()
-    // })
-    compiler.hooks.environment.tap('polyfill-plugin', () => {
-      // console.log('environment', compiler.options.entry)
-      compiler.options.entry.polyfill = {
+    // entry 入口注入polyfill
+    compiler.hooks.environment.tap(PluginName, () => {
+      console.log(typeof compiler.options.entry)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      compiler.options.entry[entryName] = {
         import: [path.resolve(__dirname, './test.js')],
       }
-      // params.options.entry.index.import.unshift(path.resolve(__dirname, './test.js'))
-      // callback && callback()
     })
 
-    // compiler.hooks.afterCompile.tap('ExportAssets', compilation => {
-    //   const entrypoints = compilation.entrypoints
-    //   const entryNames = Array.from(entrypoints.keys())
-    //   // const polyfillName = entrypoints.get('polyfill').getFiles()
-    //   console.log('afterCompile', entryNames)
-    //   const HtmlWebpackPlugin = require('html-webpack-plugin')
-    //   const hooks = HtmlWebpackPlugin.getHooks(compilation)
-    //   const htmlPlugins = compilation.options.plugins.filter((plugin: any) => plugin instanceof HtmlWebpackPlugin)
-    //   if (htmlPlugins.length === 0) {
-    //     const message =
-    //       "Error running html-webpack-tags-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?"
-    //     throw new Error(message)
-    //   }
-    //   // hooks.beforeAssetTagGeneration.tapAsync('htmlWebpackTagsPlugin', onBeforeHtmlGeneration)
-    //   // hooks.alterAssetTags.tapAsync('htmlWebpackTagsPlugin', (htmlPluginData: any, callback: any) => {
-    //   //   htmlPluginData.assetTags.scripts.unshift({
-    //   //     tagName: 'script',
-    //   //     voidTag: false,
-    //   //     meta: {plugin: 'html-webpack-plugin'},
-    //   //     attributes: {defer: false, type: undefined, src: polyfillName[0]},
-    //   //   })
-    //   //   console.log('htmlWebpackTagsPlugin', htmlPluginData.assetTags.scripts)
-    //   //   if (callback) {
-    //   //     callback(null, htmlPluginData)
-    //   //   } else {
-    //   //     return Promise.resolve(htmlPluginData)
-    //   //   }
-    //   // })
-    // })
+    compiler.hooks.thisCompilation.tap(PluginName, compilation => {
+      let polyfilename: string
+      compilation.hooks.processAssets.tapAsync(PluginName, (_compilationAssets, callback) => {
+        const files = compilation?.entrypoints?.get(entryName)?.getFiles()
+        if (files && files.length) {
+          polyfilename = files[0]
+        }
+        callback && callback()
+      })
+
+      const hooks = HtmlWebpackPlugin.getHooks(compilation)
+      const htmlPlugins = compilation.options.plugins.filter((plugin: any) => plugin instanceof HtmlWebpackPlugin)
+      if (htmlPlugins.length === 0) {
+        const message =
+          "Error running html-webpack-tags-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?"
+        throw new Error(message)
+      }
+      hooks.alterAssetTags.tapAsync(PluginName, (htmlPluginData, callback) => {
+        if (polyfilename) {
+          console.log('unshift polyfilename', polyfilename)
+          htmlPluginData.assetTags.scripts.unshift({
+            tagName: 'script',
+            voidTag: false,
+            meta: {plugin: 'html-webpack-plugin'},
+            attributes: {defer: false, type: undefined, src: polyfilename},
+          })
+        }
+        if (callback) {
+          callback(null, htmlPluginData)
+        } else {
+          return Promise.resolve(htmlPluginData)
+        }
+      })
+    })
   }
 }
 

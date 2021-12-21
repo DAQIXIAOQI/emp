@@ -17,5 +17,10 @@ module.exports = defineConfig(({mode}) => {
         js: ['//static.bdgamelive.com/public/assets/js/hm.js'],
       },
     },
+    polyfill: {
+      IE: {
+        js: ['//static.bdgamelive.com/public/assets/js/babel-polyfill.7.2.5.min.js'],
+      },
+    },
   }
 })
