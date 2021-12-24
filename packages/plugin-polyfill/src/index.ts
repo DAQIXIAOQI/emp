@@ -20,13 +20,18 @@ const writeIfModified = function (filename: string, newContent: string) {
 }
 
 const PluginPolyfill = async ({wpChain, config}: ConfigPluginOptions) => {
-  const resultString = await Ejs.renderFile(path.resolve(__dirname, '../src/tpl.ejs'), {})
-  writeIfModified(path.resolve(__dirname, '../src/test.ts'), resultString)
-  if (config && config.polyfill) {
-    const {IE, Android, Ios, auto} = config.polyfill
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const polyfill: any = config.polyfill
+  console.log(polyfill)
+  if (polyfill) {
+    const {IE, Android, Ios, auto} = polyfill
     console.log(IE, Android, Ios, auto)
+
+    // const resultString = await Ejs.renderFile(path.resolve(__dirname, '../src/tpl.ejs'), polyfill, {})
+    // writeIfModified(path.resolve(__dirname, '../stash/test.ts'), resultString)
+    wpChain.plugin('polyfill-plugin').use(TestPlugin, [{polyfill}])
   }
-  wpChain.plugin('polyfill-plugin').use(TestPlugin, [{}])
 }
 
 export default PluginPolyfill

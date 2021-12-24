@@ -1,3 +1,10 @@
 (function() {
-    console.log('aaabbbb')
+  console.log('aaabbbb111')
+  debugger
+  // IE
+  <%_ if(IE) { -%>
+  if (window.document.documentMode) {
+    document.writeIn('<% for(var js of IE.js) { %><script src="<%- js %>"></script><% } %>')
+  }
+  <%_ } -%>
 })()
