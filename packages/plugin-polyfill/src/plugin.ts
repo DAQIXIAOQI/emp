@@ -33,11 +33,6 @@ class TestPlugin {
       // const resultString = await Ejs.renderFile(path.resolve(__dirname, '../src/tpl.ejs'), this.options.polyfill, {})
       // writeIfModified(path.resolve(__dirname, '../stash/test.ts'), resultString)
       console.log(compiler.options.output.path)
-      compiler.options.plugins.push(
-        new CopyWebpackPlugin({
-          patterns: [{from: path.resolve(__dirname, '../stash/test.ts'), to: __dirname}],
-        }),
-      )
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       // compiler.options.entry[entryName] = {
@@ -47,6 +42,36 @@ class TestPlugin {
 
     // compiler.hooks.afterEmit.tap(PluginName, async compilation => {
     // })
+
+    compiler.hooks.thisCompilation.tap(PluginName, compilation => {
+      const hooks = HtmlWebpackPlugin.getHooks(compilation)
+      const htmlPlugins = compilation.options.plugins.filter((plugin: any) => plugin instanceof HtmlWebpackPlugin)
+      if (htmlPlugins.length === 0) {
+        const message =
+          "Error running html-webpack-tags-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?"
+        throw new Error(message)
+      }
+      hooks.beforeAssetTagGeneration.tapAsync(PluginName, (opt, fn) => {
+        opt.plugin.options && (opt.plugin.options.title = '1011112222222')
+        opt.plugin.options && (opt.plugin.options.test = 'a')
+        console.log('beforeAssetTagGeneration1', opt)
+        fn && fn(null, opt)
+      })
+      // hooks.beforeEmit.tapAsync(
+      //   PluginName,
+      //   async (opt: {html: string; outputName: string; plugin: HtmlWebpackPlugin}, callback) => {
+      //     console.log('before', opt)
+      //     // const resultString = await Ejs.renderFile(
+      //     //   path.resolve(__dirname, '../src/tpl2.ejs'),
+      //     //   this.options.polyfill,
+      //     //   {},
+      //     // )
+      //     opt.plugin.userOptions.title = '11111'
+      //     console.log('before1', opt)
+      //     callback && callback(null, opt)
+      //   },
+      // )
+    })
 
     // compiler.hooks.thisCompilation.tap(PluginName, compilation => {
     //   let polyfilename: string

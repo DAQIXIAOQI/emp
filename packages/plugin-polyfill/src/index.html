@@ -4,10 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <% for (var chunk in htmlWebpackPlugin.files.chunks) { if (chunk !== 'polyfill') { %>
-      <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" crossorigin="anonymous"></script>
-    <% }} %>
+    <title><%= htmlWebpackPlugin.options.title %> - <%= htmlWebpackPlugin.options.test %></title>
     <!-- EMP inject css -->
     <% for (let i in htmlWebpackPlugin.options.files.css) { %>
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.files.css[i] %>" />
@@ -19,6 +16,6 @@
   </head>
 
   <body>
-    <div id="emp-root"></div>
+    <div id="emp-root">111</div>
   </body>
 </html>
