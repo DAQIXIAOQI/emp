@@ -18,7 +18,7 @@ import path from 'path'
 //   console.warn(`* Updating outdated file '${filename}'`)
 // }
 
-interface PolyfillOption {
+export interface PolyfillOption {
   browser?: string
   uaReg?: string
   js?: string[]
