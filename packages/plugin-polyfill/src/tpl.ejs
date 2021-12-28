@@ -1,10 +1,7 @@
-(function() {
-  console.log('aaabbbb111')
-  debugger
-  // IE
-  <%_ if(IE) { -%>
-  if (window.document.documentMode) {
-    document.writeIn('<% for(var js of IE.js) { %><script src="<%- js %>"></script><% } %>')
-  }
-  <%_ } -%>
+!(function(){
+  <% for(var item of locals.list) { %>
+    if (<%- item.rule %>.test(ua)) {
+      document.writeln('<% for(var js of item.js) { %><script src="<%- js %>"><\/script><% } %>')
+    }
+  <% } %>
 })()

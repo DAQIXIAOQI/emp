@@ -143,6 +143,10 @@ export type EMPConfig = {
    * emp dts 类型同步
    */
   typingsPath?: string
+  /**
+   * polyfill
+   */
+  polyfill?: {browser?: string; uaReg?: string; js?: string[]; polyfills?: string[]; name?: string}[]
 }
 export interface ConfigEnv {
   mode: modeType
